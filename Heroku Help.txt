@@ -1,0 +1,31 @@
+To use databases:
+1. login to Heroku
+2. select app
+3. go to resources
+4. select postgres in add-on
+
+
+
+To create a table on the Heroku database from the command line:
+1. a) For Mac     - export DATABASE_URL = *mention URL*   (the URL can be found in app_name->settings->reveal config variables)
+   b) For Windows - set DATABASE_URL = *mention URL*
+2. type heroku pg:psql
+3. CREATE TABLE table_name (var1_name var1_type null_value,
+                            var2_name var2_type null_value,
+                            var3_name var3_type null value);
+   (Regarding null_value - if null, no need to mention a null value. Otherwise use NOT NULL)
+   (data types include varchar, text timestamp boolean etc. For more on this check documentation)
+
+4. INSERT INTO table_name (var1_name, var2_name, var3_name, ...)
+   VALUES (var1_value1, var2_value1, var3_value1, ...);
+
+5. SELECT * FROM table_name;
+6. \q 
+
+Step Explanations
+Step 1 -> Runs postgres in local environment (may be possible to skip this step)
+Step 2 -> enters psql shell
+Step 3 -> Creates a table with the name *table_name* and with variables *var1_name*, *var2_name* etc.
+Step 4 -> Adds data to the table *table_name*
+Step 5 -> Displays the table *table_name*
+Step 6 -> Quits the psql shell
