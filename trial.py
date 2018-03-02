@@ -31,9 +31,9 @@ def thank_you():
 
 def send_simple_message(flat, name, complaint, email):
     return requests.post(
-        "***REMOVED***/messages",
-        auth=("api", "***REMOVED***"),
-        data={"from": "Admin <***REMOVED***>",
+        "enter API base url/messages",
+        auth=("api", "enter an api_key"),
+        data={"from": "Admin <enter an email id>",
               "to": email,
               "subject": "Your Complaint Summary",
               "text": "Hi {}, we've received the complaint {} for flat {}".format(name, complaint, flat)})
@@ -45,7 +45,7 @@ def main():
     # fl=form_data["flat"]
     # com=form_data["comment"]
     #time = datetime.now()
-    conn_string = "host = '***REMOVED***' dbname = '***REMOVED***' user='***REMOVED***' password='***REMOVED***'"
+    conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
     cursor.execute("INSERT INTO complaints (flat, name, comment, created, resolved) VALUES ('{}','{}', '{}', '{}', '{}')".format(form_data["flat"], form_data["name"], form_data["comment"], str(datetime.now()), False))
