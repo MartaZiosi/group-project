@@ -64,22 +64,3 @@ def main():
 #     main()
 
 app.run(debug = True)
-<<<<<<< HEAD
-=======
-
-#
-# import psycopg2
-#
-# def main():
-#     conn_string = "host = 'localhost' dbname = 'tenants' user='postgres' password='***REMOVED***'"
-#     conn = psycopg2.connect(conn_string)
-#     cursor = conn.cursor()
-#     cursor.execute("SELECT flat, name, comment, created, resolved FROM complaints")
-#     records = cursor.fetchall()
-#     #print(records)
-#     for number in range(len(records[0])):
-#         print(records[0][number])
-#
-# if __name__ == "__main__":
-#     main()
->>>>>>> 0e6790e96128889d27059087eab0295d137add22
