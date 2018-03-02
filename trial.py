@@ -45,7 +45,7 @@ def main():
     # fl=form_data["flat"]
     # com=form_data["comment"]
     #time = datetime.now()
-    conn_string = "host = 'localhost' dbname = 'tenants' user='postgres' password='***REMOVED***'"
+    conn_string = "host = '***REMOVED***' dbname = '***REMOVED***' user='***REMOVED***' password='***REMOVED***'"
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
     cursor.execute("INSERT INTO complaints (flat, name, comment, created, resolved) VALUES ('{}','{}', '{}', '{}', '{}')".format(form_data["flat"], form_data["name"], form_data["comment"], str(datetime.now()), False))
