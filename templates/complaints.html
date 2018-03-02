@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Complaints</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="css/styles.css")}}">
+  </head>
+
+  <body>
+    <table>
+      <tr>
+        <th>Flat No</th>
+        <th>Complaint</th>
+        <th>Created at</th>
+        <th>Resolved</th>
+      </tr>
+
+      {% for row in records_list %}
+      <tr>
+        <td>{{row[0]}}</td>
+        <td>{{row[2]}}</td>
+        <td>{{row[3]}}</td>
+        <td>{{row[4]}}</td>
+      </tr>
+      {% endfor %}
+
+    </table>
+  </body>
+
+</html>
