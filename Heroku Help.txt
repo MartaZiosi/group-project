@@ -29,3 +29,11 @@ Step 3 -> Creates a table with the name *table_name* and with variables *var1_na
 Step 4 -> Adds data to the table *table_name*
 Step 5 -> Displays the table *table_name*
 Step 6 -> Quits the psql shell
+
+
+
+
+
+To add Heroku database to pgAdmin4:
+1. create new server on pgadmin4
+2. fill in database details from Heroku (host, database_name, username, password) and in the SSL tabl, change SSL mode to required.
