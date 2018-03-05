@@ -61,7 +61,8 @@ def login_form():
 @app.route("/flat", methods = ["POST"])
 def login_true():
     login_data = request.form
-    if check_login(login_data["username"], login_data["password"]) == False:
+    user_info = check_login(login_data["username"], login_data["password"])
+    if user_info == False:
         return render_template ("/wrong_login.html")
     else:
         return render_template ("/flat_homepage.html")
