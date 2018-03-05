@@ -7,24 +7,49 @@
   </head>
 
   <body>
-    <table>
-      <tr>
-        <th>Flat No</th>
-        <th>Complaint</th>
-        <th>Created at</th>
-        <th>Resolved</th>
-      </tr>
+    {% for row in records_list %}
+    <div id="forum-post">
+      {% if row[4] == False %}
+      <article style = "background-color:#E74C3C">
+        <footer>
+          <div id = "flat_{{row[0]}}">
+            <h4>{{row[0]}}</h4>
+          </div>
+          <div id = "comment_time">
+            <h6>{{row[3]}}</h6>
+          </div>
+        </footer>
 
-      {% for row in records_list %}
-      <tr>
-        <td>{{row[0]}}</td>
-        <td>{{row[2]}}</td>
-        <td>{{row[3]}}</td>
-        <td>{{row[4]}}</td>
-      </tr>
-      {% endfor %}
+        <div id = "{{row[0]}}_comment">
+          <p>
+            {{row[2]}}
+          </p>
+        </div>
+      </article>
 
-    </table>
+      {% else %}
+      <article style = "background-color:#27CC71">
+        <footer>
+          <div id = "flat_{{row[0]}}">
+            <h4>{{row[0]}}</h4>
+          </div>
+          <div id = "comment_time">
+            <h6>{{row[3]}}</h6>
+          </div>
+        </footer>
+
+        <div id = "{{row[0]}}_comment">
+          <p>
+            {{row[2]}}
+          </p>
+        </div>
+      </article>
+
+      {% endif %}
+      <br>
+    </div>
+    {% endfor %}
+
   </body>
 
 </html>

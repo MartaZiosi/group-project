@@ -1,0 +1,23 @@
+body {
+background-color: #BFC9CA;
+color: #212F3D;
+font-family: "Lato", sans-serif;
+}
+
+article {
+  padding-top: 1%;
+  padding-bottom: 1%;
+  padding-left: 2%;
+  margin-right: 50%;
+  margin-left: 5%;
+}
+
+h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+}

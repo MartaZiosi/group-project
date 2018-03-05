@@ -40,11 +40,16 @@ def add_data():
 
 @app.route("/complaints", methods=["GET"])
 def show_complaints():
-    conn_string = "host = 'localhost' dbname = 'tenants' user='postgres' password='password'"
+    conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM complaints")
     records = cursor.fetchall()
+    for row in records:
+        i = records.index(row)
+        dmyt_format_time = row[3].strftime('%b %d, %Y at %H:%M')
+        row = row[:3] + (dmyt_format_time, ) + row[4:]
+        records[i] = row
     return render_template("complaints.html", records_list = records)
 
 
