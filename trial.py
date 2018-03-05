@@ -53,4 +53,31 @@ def show_complaints():
     return render_template("complaints.html", records_list = records)
 
 
+@app.route("/login")
+def login_form():
+    return render_template("/login.html")
+
+
+@app.route("/flat", methods = ["POST"])
+def login_true():
+    login_data = request.form
+    if check_login(login_data["username"], login_data["password"]) == False:
+        return render_template ("/wrong_login.html")
+    else:
+        return render_template ("/flat_homepage.html")
+
+def check_login(username, password):
+    conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
+    conn = psycopg2.connect(conn_string)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users")
+    username_records = cursor.fetchall()
+    for row in username_records:
+        if row[0] == username and row[1] == password:
+            return row
+        else:
+            continue
+    return False
+
+
 app.run(debug = True)

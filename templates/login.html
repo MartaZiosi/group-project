@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Login Page</title>
+    <link rel = "stylesheet" type = "text/css" href = "{{url_for("static", filename = "css/login.css")}}">
+  </head>
+
+  <body>
+    <div id = "login form">
+      <form method="post" action="/flat">
+        <fieldset>
+          <legend>Please enter you login details</legend>
+          <label for ="username">
+            Flat No:
+            <input type="text" id="username" name="username" required="required" />
+          </label>
+
+          <label for = "password">
+            Password:
+            <input type="password" id="password" name="password" required="required" />
+          </label>
+
+          <label for="submit-button">
+            <input type="submit" id="submit-button" value="Submit" />
+          </label>
+
+        </fieldset>
+      </form>
+    </div>
+
+  </body>
+</html>
