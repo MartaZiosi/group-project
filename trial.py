@@ -1,5 +1,5 @@
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import requests
 import psycopg2
 from datetime import datetime
@@ -63,9 +63,9 @@ def login_true():
     login_data = request.form
     user_info = check_login(login_data["username"], login_data["password"])
     if user_info == False:
-        return render_template ("/wrong_login.html")
+        return redirect(url_for("login_false"))
     else:
-        return render_template ("/flat_homepage.html")
+        return render_template ("/flat_homepage.html", user_data = user_info)
 
 def check_login(username, password):
     conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
@@ -80,5 +80,9 @@ def check_login(username, password):
             continue
     return False
 
+
+@app.route("/session")
+def login_false():
+    return render_template("/wrong_login.html")
 
 app.run(debug = True)
