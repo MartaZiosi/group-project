@@ -50,6 +50,39 @@
     </div>
     {% endfor %}
 
+
+    <div id="complaints form">
+      <form method="post" action="/thankyou">
+        <fieldset>
+          <legend>Fill in the form</legend>
+          <label for ="flat">
+            Flat:
+            <input type="text" id="flat" name="flat" required="required" />
+          </label>
+
+          <label for = "name">
+            Name:
+            <input type="text" id="name" name="name" required="required" />
+          </label>
+
+          <label for="email">
+            Email:
+            <input type="email" id="email" name="email" required="required" />
+          </label>
+
+          <label for="comment">
+            Comment:
+            <input type="text" id="comment" name="comment" required="required"/>
+          </label>
+
+          <label for="submit-button">
+            <input type="submit" id="submit-button" value="Submit" />
+          </label>
+
+        </fieldset>
+      </form>
+    </div>
+
   </body>
 
 </html>

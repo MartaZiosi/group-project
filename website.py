@@ -4,38 +4,13 @@ import requests
 import psycopg2
 from datetime import datetime
 
-app = Flask("SendEmail")
+app = Flask("al-website")
+
 
 @app.route("/")
 def complaints_form():
-    return render_template("trial.html")
-
-
-@app.route("/thankyou", methods=["POST"]) #can define only one function for one route. if I need multiple functions to take place, I need to define one function uassociated with the route which calls all other functions
-#try defining the same route twice and associated with different functions. It's not good practice to usually do this though
-def thank_you():
-    form_data = request.form
-    add_data()
-    send_simple_message(form_data["flat"], form_data["name"], form_data["comment"], form_data["email"]) #the order of definition doesn't matter. This is because, here, I'm not calling the function send_simple_message until I go to /thankyou
-    return render_template("thankyou.html", data=form_data)
-
-def send_simple_message(flat, name, complaint, email):
-    return requests.post(
-        "enter API base url/messages",
-        auth=("api", "enter an api_key"),
-        data={"from": "Admin <enter an email id>",
-              "to": email,
-              "subject": "Your Complaint Summary",
-              "text": "Hi {}, we've received the complaint {} for flat {}".format(name, complaint, flat)})
-
-def add_data():
-    form_data = request.form
-    conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
-    conn = psycopg2.connect(conn_string)
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO complaints (flat, name, comment, created, resolved) VALUES ('{}','{}', '{}', '{}', '{}')".format(form_data["flat"], form_data["name"], form_data["comment"], str(datetime.now()), False))
-    conn.commit()
-    conn.close()
+    return render_template("index.html")
+#Opens to the home page conatining links to all other pages
 
 
 @app.route("/complaints", methods=["GET"])
@@ -51,11 +26,42 @@ def show_complaints():
         row = row[:3] + (dmyt_format_time, ) + row[4:]
         records[i] = row
     return render_template("complaints.html", records_list = records)
+#Open page to register and view all other complaints
+
+
+@app.route("/thankyou", methods=["POST"])
+def thank_you():
+    form_data = request.form
+    add_data()
+    send_simple_message(form_data["flat"], form_data["name"], form_data["comment"], form_data["email"])
+    return render_template("thankyou.html", data=form_data)
+#Open page summarizing the submitted complaint
+
+def send_simple_message(flat, name, complaint, email):
+    return requests.post(
+        "enter API base url/messages",
+        auth=("api", "enter an api_key"),
+        data={"from": "Admin <enter an email id>",
+              "to": email,
+              "subject": "Your Complaint Summary",
+              "text": "Hi {}, we've received the complaint {} for flat {}".format(name, complaint, flat)})
+#This function sends an email summarizing the submitted complaint to the email provided
+
+def add_data():
+    form_data = request.form
+    conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
+    conn = psycopg2.connect(conn_string)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO complaints (flat, name, comment, created, resolved) VALUES ('{}','{}', '{}', '{}', '{}')".format(form_data["flat"], form_data["name"], form_data["comment"], str(datetime.now()), False))
+    conn.commit()
+    conn.close()
+#This function create a new row of values in the table of complaints
 
 
 @app.route("/login")
 def login_form():
     return render_template("/login.html")
+#Opens login page
 
 
 @app.route("/flat", methods = ["POST"])
@@ -66,6 +72,7 @@ def login_true():
         return redirect(url_for("login_false"))
     else:
         return render_template ("/flat_homepage.html", user_data = user_info)
+#Opens flat homepage showing all registered complaints by the user if login successful or redirects to login_false function if login unsuccessful
 
 def check_login(username, password):
     conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
@@ -79,10 +86,12 @@ def check_login(username, password):
         else:
             continue
     return False
+#This function checks if user entered correct login information
 
 
 @app.route("/session")
 def login_false():
     return render_template("/wrong_login.html")
+#Opens the login unsuccessful page giving users the chance to try again
 
 app.run(debug = True)
