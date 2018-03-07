@@ -1,10 +1,11 @@
-
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 import requests
 import psycopg2
+import os
 from datetime import datetime
 
-app = Flask("al-website")
+app = Flask("SendEmail")
+app.secret_key = os.urandom(12)
 
 
 @app.route("/")
@@ -67,11 +68,15 @@ def login_form():
 @app.route("/flat", methods = ["POST"])
 def login_true():
     login_data = request.form
-    user_info = check_login(login_data["username"], login_data["password"])
-    if user_info == False:
+    check_login(login_data["username"], login_data["password"])
+    # user_info = check_login(login_data["username"], login_data["password"])
+    if session["logged_in"] == False:
         return redirect(url_for("login_false"))
+    elif session["user"] == "admin":
+        return redirect(url_for("admin_page"))
     else:
-        return render_template ("/flat_homepage.html", user_data = user_info)
+        user_complaints = show_selected_complaints(session["user"])
+        return render_template ("/flat_homepage.html", data = user_complaints)
 #Opens flat homepage showing all registered complaints by the user if login successful or redirects to login_false function if login unsuccessful
 
 def check_login(username, password):
@@ -82,9 +87,13 @@ def check_login(username, password):
     username_records = cursor.fetchall()
     for row in username_records:
         if row[0] == username and row[1] == password:
-            return row
+            session["logged_in"] = True
+            session["user"] = row[0]
+            return True
         else:
             continue
+    session["logged_in"] = False
+    session["user"] = None
     return False
 #This function checks if user entered correct login information
 
@@ -93,5 +102,31 @@ def check_login(username, password):
 def login_false():
     return render_template("/wrong_login.html")
 #Opens the login unsuccessful page giving users the chance to try again
+
+
+@app.route("/admin")
+def admin_page():
+    records = show_selected_complaints('admin')
+    return render_template("/admin.html", data = records)
+
+
+def show_selected_complaints(username):
+    conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
+    conn = psycopg2.connect(conn_string)
+    cursor = conn.cursor()
+    if username == "admin":
+        cursor.execute("SELECT * FROM complaints ORDER BY created DESC")
+        records = cursor.fetchall()
+    else:
+        cursor.execute("SELECT * FROM complaints WHERE flat = '{}' ORDER BY created DESC".format(username))
+        records = cursor.fetchall()
+
+    for row in records:
+        i = records.index(row)
+        dmyt_format_time = row[3].strftime('%b %d, %Y at %H:%M')
+        row = row[:3] + (dmyt_format_time, ) + row[4:]
+        records[i] = row
+    return records
+
 
 app.run(debug = True)
