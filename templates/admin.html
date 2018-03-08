@@ -8,6 +8,7 @@
   </head>
 
   <body>
+    You're signed in as {{ session["user"] }}. <a href = "/signout">(Sign Out)</a>
     <form method = "post", action="/admin/confirming-submission">
       {% for row in data %}
       <div id="forum-post">

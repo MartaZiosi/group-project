@@ -7,6 +7,7 @@
   </head>
 
   <body>
+    You're logged in as {{ session["user"] }}. <a href = "/signout">(Sign Out)</a>
     {% for row in data %}
     <div id="forum-post">
       {% if row[4] == False %}
