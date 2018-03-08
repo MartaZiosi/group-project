@@ -4,52 +4,73 @@
   <head>
     <title>Admin Page</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="css/complaints.css")}}">
+    <!-- <script src = "{{ url_for("static", filename="js/admin.js")}}"></script> -->
   </head>
 
   <body>
-    {% for row in data %}
-    <div id="forum-post">
-      {% if row[4] == False %}
-      <article style = "background-color:#E74C3C">
-        <footer>
-          <div id = "flat_{{row[0]}}">
-            <h4>{{row[0]}}</h4>
+    <form method = "post", action="/admin/confirming-submission">
+      {% for row in data %}
+      <div id="forum-post">
+        {% if row[4] == False %}
+        <article style = "background-color:#E74C3C" id = "complaint_post">
+          <footer>
+            <div id = "comment_{{row[5]}}_flat">
+              <h4>{{row[0]}}</h4>
+            </div>
+            <div id = "comment_{{row[5]}}_time">
+              <h6>{{row[3]}}</h6>
+            </div>
+          </footer>
+
+          <div id = "comment_{{row[5]}}">
+            <p>
+              {{row[2]}}
+            </p>
           </div>
-          <div id = "comment_time">
-            <h6>{{row[3]}}</h6>
+
+          <div id = "comment_{{row[5]}}_status">
+            <label for="resolved-checkbox">
+              <h6>Check if complaint resolved:
+              <input type="checkbox" name="resolved_check_comment_{{row[5]}}" /></h6>
+            </label>
+
+        </article>
+
+        {% else %}
+        <article style = "background-color:#27CC71" id = "complaint_post">
+          <footer>
+            <div id = "comment_{{row[5]}}_flat">
+              <h4>{{row[0]}}</h4>
+            </div>
+            <div id = "comment_{{row[5]}}_time">
+              <h6>{{row[3]}}</h6>
+            </div>
+          </footer>
+
+          <div id = "comment_{{row[5]}}">
+            <p>
+              {{row[2]}}
+            </p>
           </div>
-        </footer>
 
-        <div id = "{{row[0]}}_comment">
-          <p>
-            {{row[2]}}
-          </p>
-        </div>
-      </article>
-
-      {% else %}
-      <article style = "background-color:#27CC71">
-        <footer>
-          <div id = "flat_{{row[0]}}">
-            <h4>{{row[0]}}</h4>
-          </div>
-          <div id = "comment_time">
-            <h6>{{row[3]}}</h6>
-          </div>
-        </footer>
-
-        <div id = "{{row[0]}}_comment">
-          <p>
-            {{row[2]}}
-          </p>
-        </div>
-      </article>
+          <div id = "comment_{{row[5]}}_status">
+            <label for="resolved-checkbox">
+              <h6>Check if complaint resolved:
+              <input type="checkbox" name="resolved_check_comment_{{row[5]}}" checked /></h6>
+            </label>
+        </article>
 
 
-      {% endif %}
-      <br>
-    </div>
-    {% endfor %}
+        {% endif %}
+        <br>
+
+      </div>
+      {% endfor %}
+
+      <label for="submit-button">
+        <input type="submit" id="submit-button" value="Save Changes" />
+      </label>
+    </form>
 
   </body>
 

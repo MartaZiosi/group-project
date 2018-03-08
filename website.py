@@ -129,4 +129,26 @@ def show_selected_complaints(username):
     return records
 
 
+
+@app.route("/admin/confirming-submission", methods=["POST"])
+def update_complaints():
+    conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
+    conn = psycopg2.connect(conn_string)
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM complaints")
+    records = cursor.fetchall()
+    for row in records:
+        checkbox_name = "resolved_check_comment_{}".format(row[0])
+        if request.form.get(checkbox_name):
+            # return "Updated {}".format(checkbox_name)
+            cursor.execute("UPDATE complaints SET resolved = True WHERE id = '{}'".format(row[0]))
+            conn.commit()
+        else:
+            cursor.execute("UPDATE complaints SET resolved = False WHERE id = '{}'".format(row[0]))
+            conn.commit()
+    conn.close()
+    return redirect("/admin")
+
+
+
 app.run(debug = True)
