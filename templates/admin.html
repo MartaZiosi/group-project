@@ -8,7 +8,8 @@
   </head>
 
   <body>
-    You're signed in as {{ session["user"] }}. <a href = "/signout">(Sign Out)</a>
+    <p>You're signed in as {{ session["user"] }}. <a href = "/signout">(Sign Out)</a><br>
+    <!-- <a href = "/user/account-info">Change account information</a> --></p>
     <form method = "post", action="/admin/confirming-submission">
       {% for row in data %}
       <div id="forum-post">

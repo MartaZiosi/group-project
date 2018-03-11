@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>{{ session["user"] }} Account</title>
+  </head>
+
+  <body>
+    <p>Flat - {{ session["user"] }}<br>
+      <form method = "post", action = "/user/change-account-info">
+        <label for = "old-password">
+          Old password:
+          <input type="password" id="old-password" name="old-password" placeholder="Old Password" required="required" />
+        </label>
+        <br>
+        <label for = "new-password">
+          New password:
+          <input type="password" id="new-password" name="new-password" placeholder="New Password" required="required" />
+        </label>
+        <br>
+        <label for="submit-button">
+          <input type="submit" id="submit-button" value="Save Changes" />
+        </label>
+      </form>
+    </p>
+  </body>
+</html>
