@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import requests
 import psycopg2
-import os
+# import os
 from datetime import datetime
 
 app = Flask("SendEmail")
-app.secret_key = os.urandom(12)
+# app.secret_key = os.urandom(12)
+app.secret_key = "add_a_secret_key"#need a fixed key as using the random one doesn't work with Heroku(a new random key is generated for each request)
 
 
 @app.route("/")
