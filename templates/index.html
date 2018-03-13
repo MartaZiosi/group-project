@@ -2,14 +2,49 @@
 
 <html>
   <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><!--To use on a touchscreen-->
+    <script src="https://code.jquery.com/jquery-3.1.1.js" type="text/javascript"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel = "stylesheet" type="text/css" href="{{ url_for("static", filename="css/index.css")}}">
     <title>Home</title>
   </head>
 
   <body>
-    <ul>
-      <li><a href = "/complaints">Complaints</a></li>
-      <!-- <li><a href = "./announcements.html"></a>Announcements</li> -->
-      <li><a href = "/login">Login</a></li>
-    </ul>
+
+    <!--For navigation links-->
+    <div class="container-fluid">
+      <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+
+
+        <!--Small screen size-->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#topbar-menu" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="glyphicon glyphicon-menu-hamburger"></span>
+          </button>
+          <a class="navbar-brand" href="#"><h4>AL</h4></a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="topbar-menu">
+          <ul class="nav nav-pills nav-justified">
+            <li role="presentation" class = "about"><a href="/about" class="about"><h4>About</h4></a></li>
+            <li role="presentation" class = "announcements" ><a href="/announcements" class="announcements"><h4>Announcements</h4></a></li>
+            <li role = "presentation" class = "signin">
+              {% if "user" in session %}
+              <h4 class ="navbar-right"><small>You're signed in as <b><a href = "/user" class = "signin">{{session["user"]}}</a></b>
+               (<a href = "/signout" class="signout">Sign out</a>)</small></h4>
+
+              {% else %}
+              <h4 class ="navbar-right"><small>You're not signed in. (<b><a href = "/login" class="signin">Sign In</a></b>)</small></h4>
+
+              {% endif %}
+            </li>
+          </ul>
+        </div>
+
+      </nav>
+    </div>
+
   </body>
 </html>

@@ -8,29 +8,27 @@
   <body>
     {% if data %}
     <h3>Your complaint has been registered.</h3>
-    <p>
-      Complaint summary:<br>
-      <table>
-        <tr>
-          <th>Flat No</th>
-          <th>Complaint</th>
-          <!-- <th>Created at</th> -->
-        </tr>
+    Complaint summary:<br>
+    <table>
+      <tr>
+        <th>Flat No</th>
+        <th>Complaint</th>
+        <!-- <th>Created at</th> -->
+      </tr>
 
-        <tr>
-          <td>{{data.flat}}</td>
-          <td>{{data.comment}}</td>
-          <!-- <td>{{data}} -->
-        </tr>
-      </table>
+      <tr>
+        <td>{{data.flat}}</td>
+        <td>{{data.comment}}</td>
+        <!-- <td>{{data}} -->
+      </tr>
+    </table>
 
 
-      <!-- <h4>We'll be in touch shortly {{data.name}}, please check your email {{data.email}}</h4> -->
-    </p>
+    <!-- <h4>We'll be in touch shortly {{data.name}}, please check your email {{data.email}}</h4> -->
     {% else %}
     <h4>Sorry, no data found!</h4>
     {% endif %}
-    <p>Go back to <a href = "/complaints">Complaints</a></p>
+    <p>Go back to your <a href = "/user">complaints</a></p>
   </body>
 
 </html>
