@@ -23,7 +23,7 @@ def about():
 
 @app.route("/announcements")
 def announcement():
-    conn_string = "host = 'ec2-184-73-196-65.compute-1.amazonaws.com' dbname = 'd1o7vtp5j9d3ir' user='xsxjgcoihanbjr' password='d5b16cb44ef8e47998cc4c1bbd25f73a755986d01bda1875fa5f38f10aaf9d23'"
+    conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM announcements ORDER BY posted DESC")
@@ -38,29 +38,11 @@ def announcement():
 
 
 
-@app.route("/complaints", methods=["GET"])
-def show_complaints():
-    conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
-    conn = psycopg2.connect(conn_string)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM complaints")
-    records = cursor.fetchall()
-    for row in records:
-        i = records.index(row)
-        dmyt_format_time = row[3].strftime('%b %d, %Y at %H:%M')
-        row = row[:3] + (dmyt_format_time, ) + row[4:]
-        records[i] = row
-    return render_template("complaints.html", records_list = records)
-#Open page to register and view all other complaints
-
-
 @app.route("/thankyou", methods=["POST"])
 def thank_you():
-    form_data = request.form
     add_data()
-    send_simple_message(form_data["flat"], form_data["name"], form_data["comment"], form_data["email"])
-    return render_template("thankyou.html", data=form_data)
-#Open page summarizing the submitted complaint
+    return redirect("/user")
+#redirect to user complaints page
 
 def send_simple_message(flat, name, complaint, email):
     return requests.post(
