@@ -1,6 +1,7 @@
 body {
-background-color: #f7f7f7;
-color: #333;
+  background-color: #222;
+  color: #aeafaf;
+  /* padding-top: 100px; */
 /* font-family: "Lato", sans-serif; */
 }
 
@@ -24,17 +25,7 @@ color: #333;
   padding-top: 0%;
 }
 
-/*
-#topbar-menu li.clicked:hover {
-  background-color: rgba(67,67,67,0.6);
-}
-#topbar-menu li.announcements {
-  background-color: #222222
-}
 
-#topbar-menu li.announcements:hover {
-  background-color: rgba(67,67,67,0.6);
-} */
 button {
   color: #aeafaf;
   background-color: #222222;
@@ -49,21 +40,7 @@ button:hover {
   color: #ffffff;
   background-color: #222222;
 }
-/* .glyphicon-menu-hamburger:visited {
-  color: #ffffff
-  background-color: #222222;
-}
 
-
-.glyphicon-menu-hamburger:hover {
-  color: #ffffff;
-  background-color: #222222;
-}
-
-.glyphicon-menu-hamburger:active {
-  color: #ffffff;
-  background-color: #222222;
-} */
 
 #topbar-menu a {
   color: #aeafaf;
@@ -74,10 +51,6 @@ button:hover {
   background-color: #222222;
 }
 
-/* #topbar-menu a.about:visited{
-  color: #dedede;
-  background-color: #222222;
-} */
 
 #topbar-menu a:hover {
   color: #ffffff;
@@ -112,6 +85,14 @@ nav.navbar {
   padding-right: 5%;
 }
 
-body {
-  padding-top: 5%;
+.list-inline li {
+  padding-right: 0%;
+  padding-left: 0%;
 }
+
+.list-inline b {
+  color: #aeafaf;
+}
+ #copyright {
+   text-align: center;
+ }

@@ -89,6 +89,27 @@
         <br>
         {% endfor %}
 
+        {#
+        <!-- <nav aria-label="Page navigation">
+          <ul class="pager">
+            {% if page != 1 %}
+            <li>
+              <a href="/user/pg={{page-1}}" aria-label="Previous">
+                <span aria-hidden="true">&larr;</span> Newer
+              </a>
+            </li>
+            {% endif %}
+            {% if page != max_page %}
+            <li>
+              <a href="/user/pg={{page+1}}" aria-label="Next"> Older
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav> -->
+        #}
+
         <hr>
 
         <div id="complaints_form">

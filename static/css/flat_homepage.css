@@ -1,6 +1,7 @@
 body {
-background-color: #eee;
-color: #333;
+  background-color: #eee;
+  color: #333;
+  padding-top: 100px;
 /* font-family: "Lato", sans-serif; */
 }
 
@@ -111,18 +112,20 @@ nav.navbar {
   padding-right: 5%;
 }
 
-body {
-  padding-top: 5%;
-}
 
 .jumbotron {
   background-color: #eee;
 }
 
-.text-right a {
-  padding-right: 2%;
-  color: #333
+.list-inline li {
+  padding-right: 0%;
+  padding-left: 0%;
 }
+
+.list-inline b {
+  color: #aeafaf;
+}
+
 
 .unresolved {
   /* background-color: #f2dede; */

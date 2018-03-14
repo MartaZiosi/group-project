@@ -113,11 +113,6 @@ nav.navbar {
 }
 
 
-.jumbotron {
-  background-color: #eee;
-  text-align: center;
-}
-
 .list-inline li {
   padding-right: 0%;
   padding-left: 0%;
@@ -125,4 +120,9 @@ nav.navbar {
 
 .list-inline b {
   color: #aeafaf;
+}
+
+.jumbotron {
+  background-color: #eee;
+  /* text-align: center; */
 }

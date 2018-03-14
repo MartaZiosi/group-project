@@ -115,7 +115,7 @@ nav.navbar {
 
 .jumbotron {
   background-color: #eee;
-  text-align: center;
+  /* text-align: center; */
 }
 
 .list-inline li {

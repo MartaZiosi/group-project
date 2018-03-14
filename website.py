@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import requests
 import psycopg2
-# import os
 from datetime import datetime
+import random
+import string
 
-app = Flask("SendEmail")
-# app.secret_key = os.urandom(12)
+
+app = Flask("Website")
 app.secret_key = "add_a_secret_key"#need a fixed key as using the random one doesn't work with Heroku(a new random key is generated for each request)
 
 
@@ -37,12 +38,31 @@ def announcement():
     return render_template("announcements.html", records_list = records)
 
 
+@app.route("/posted", methods=["POST"])
+def announcement_posted():
+    add_announcement()
+    return redirect("/announcements")
+
+
+
+def add_announcement():
+    form_data = request.form
+    conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
+    conn = psycopg2.connect(conn_string)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO announcements (announcement, posted) VALUES ('{}','{}')".format(form_data["announcement"], datetime.now()))
+    conn.commit()
+    conn.close()
+
+
 
 @app.route("/thankyou", methods=["POST"])
 def thank_you():
-    add_data()
+    form_data = request.form
+    add_complaint()
+    send_simple_message(session["user"], form_data["name"], form_data["comment"], form_data["email"])
     return redirect("/user")
-#redirect to user complaints page
+
 
 def send_simple_message(flat, name, complaint, email):
     return requests.post(
@@ -51,18 +71,20 @@ def send_simple_message(flat, name, complaint, email):
         data={"from": "Admin <enter an email id>",
               "to": email,
               "subject": "Your Complaint Summary",
-              "text": "Hi {}, we've received the complaint {} for flat {}".format(name, complaint, flat)})
-#This function sends an email summarizing the submitted complaint to the email provided
+              "text": '''Hi {}, we've received the following complaint for flat {}:
 
-def add_data():
+              {}'''.format(name, flat, complaint)})
+
+
+def add_complaint():
     form_data = request.form
     conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO complaints (flat, name, comment, created, resolved) VALUES ('{}','{}', '{}', '{}', '{}')".format(session["user"], form_data["name"], form_data["comment"], str(datetime.now()), False))
+    cursor.execute("INSERT INTO complaints (flat, name, comment, created, resolved) VALUES ('{}','{}', '{}', '{}', '{}')".format(session["user"], form_data["name"], form_data["comment"], datetime.now(), False))
     conn.commit()
     conn.close()
-#This function create a new row of values in the table of complaints
+
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -84,6 +106,7 @@ def check_login(username, password):
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users")
     username_records = cursor.fetchall()
+    conn.close()
     for row in username_records:
         if row[0] == username and row[1] == password:
             return True
@@ -93,16 +116,56 @@ def check_login(username, password):
 
 
 
+
+@app.route("/forgotten-password")
+def forgotten_password():
+    return render_template("forgotten_password.html")
+
+@app.route("/reset-password", methods=["POST"])
+def reset_successful():
+    form_data = request.form
+    data = reset_password()
+    send_password_email(data[0], data[1])
+    return render_template("reset_password.html")
+
+def reset_password():
+    new_password = "".join(random.choices(string.ascii_letters + string.digits, k=15))
+    form_data = request.form
+    conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
+    conn = psycopg2.connect(conn_string)
+    cursor = conn.cursor()
+    cursor.execute("SELECT email from users WHERE username = '{}'".format(form_data["flat"]))
+    email = cursor.fetchall()
+    cursor.execute("UPDATE users SET password = '{}' WHERE username = '{}'".format(new_password, form_data["flat"]))
+    conn.commit()
+    conn.close()
+    return [email[0][0], new_password]
+
+def send_password_email(email, password):
+    return requests.post(
+        "enter API base url/messages",
+        auth=("api", "enter an api_key"),
+        data={"from": "Admin <enter an email id>",
+              "to": email,
+              "subject": "Password change",
+              "text": '''Find your new password below.Please change this password to something memorable.
+              {}'''.format(password)})
+
+
+
 @app.route("/user")
 def homepage():
     if "user" in session:
         if session["user"] == "admin":
             all_complaints = show_selected_complaints('admin')
             return render_template("admin.html", data = all_complaints)
+
         else:
             user_complaints = show_selected_complaints(session["user"])
             return render_template ("flat_homepage.html", data = user_complaints)
     return redirect(url_for("login"))
+
+
 
 
 def show_selected_complaints(username):
@@ -115,8 +178,8 @@ def show_selected_complaints(username):
     else:
         cursor.execute("SELECT * FROM complaints WHERE flat = '{}' ORDER BY created DESC".format(username))
         records = cursor.fetchall()
-    conn.close()
 
+    conn.close()
     for row in records:
         i = records.index(row)
         dmyt_format_time = row[3].strftime('%b %d, %Y at %H:%M')
@@ -185,6 +248,5 @@ def change_password(old_password, new_password):
     else:
         conn.close()
         return False
-
 
 app.run(debug = True)
