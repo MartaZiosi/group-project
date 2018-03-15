@@ -116,17 +116,22 @@ def check_login(username, password):
 
 
 
-
 @app.route("/forgotten-password")
 def forgotten_password():
     return render_template("forgotten_password.html")
+
+
 
 @app.route("/reset-password", methods=["POST"])
 def reset_successful():
     form_data = request.form
     data = reset_password()
-    send_password_email(data[0], data[1])
-    return render_template("reset_password.html")
+    if data == False:
+        return render_template("wrong_flat.html")
+    else:
+        send_password_email(data[0], data[1])
+        return render_template("reset_password.html")
+
 
 def reset_password():
     new_password = "".join(random.choices(string.ascii_letters + string.digits, k=15))
@@ -134,13 +139,21 @@ def reset_password():
     conn_string = "host = 'host_name' dbname = 'database_name' user='username' password='password'"
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
-    cursor.execute("SELECT email from users WHERE username = '{}'".format(form_data["flat"]))
-    email = cursor.fetchall()
-    cursor.execute("UPDATE users SET password = '{}' WHERE username = '{}'".format(new_password, form_data["flat"]))
-    conn.commit()
-    conn.close()
-    return [email[0][0], new_password]
+    cursor.execute("SELECT username from users")
+    users = cursor.fetchall()
+    for user in users:
+        if form_data["flat"] == user[0]:
+            cursor.execute("SELECT email from users WHERE username = '{}'".format(form_data["flat"]))
+            email = cursor.fetchall()
+            cursor.execute("UPDATE users SET password = '{}' WHERE username = '{}'".format(new_password, form_data["flat"]))
+            conn.commit()
+            conn.close()
+            return [email[0][0], new_password]
+        else:
+            continue
+    return False
 
+    
 def send_password_email(email, password):
     return requests.post(
         "enter API base url/messages",
